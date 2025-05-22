@@ -24,10 +24,10 @@ class TextLoginForm extends StatelessWidget {
       ),
       child: TextFormField(
         controller: controller,
-        keyboardType: TextInputType.emailAddress,
-        obscureText: true,
+        keyboardType: textInputType,
+        obscureText: obscure,
         decoration: InputDecoration(
-          hintText: 'Email',
+          hintText: text,
           border: InputBorder.none,
           contentPadding: EdgeInsets.all(0),
           hintStyle: TextStyle(

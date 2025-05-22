@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:villanakey/components/button.dart';
+import 'package:villanakey/components/google_login.dart';
 import 'package:villanakey/components/text.login.form.dart';
 
 class LoginPage extends StatelessWidget {
   LoginPage({super.key});
   final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -16,15 +19,11 @@ class LoginPage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                const SizedBox(height: 20),
                 Container(
                   alignment: Alignment.center,
-                  child: Text(
-                    'Logo',
-                    style: TextStyle(
-                      color: Color(0xFF819766),
-                      fontSize: 35,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  child: Image.asset('assets/icons/logoya_app.png',
+                  height: 150,
                   ),
                 ),
                 const SizedBox(height: 50),
@@ -44,16 +43,46 @@ class LoginPage extends StatelessWidget {
                   obscure: false,
                   textInputType: TextInputType.emailAddress,
                 ),
-                const SizedBox(height: 6),
+
+                const SizedBox(height: 10),
+
                 // Password INPUT
                 TextLoginForm(
-                  controller: emailController,
+                  controller: passwordController,
                   text: 'Password',
                   obscure: true,
                   textInputType: TextInputType.text,
                 ),
+                const SizedBox(height: 10),
+                Button(),
+                const SizedBox(height: 10),
+                GoogleLogin(),
               ],
             ),
+          ),
+        ),
+      ),
+      bottomNavigationBar: SafeArea(
+        child: Container(
+          height: 50,
+          color: Colors.white,
+          alignment: Alignment.center,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text("Don't have an account? "),
+              InkWell(
+                onTap: () {
+                  print("Go to Sign Up");
+                },
+                child: const Text(
+                  "Sign Up",
+                  style: TextStyle(
+                    color: Color(0xFF819766),   
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ),
