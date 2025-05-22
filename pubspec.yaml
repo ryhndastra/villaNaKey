@@ -1,6 +1,6 @@
 name: villanakey
 description: "Aplikasi reservasi villa."
-publish_to: 'none'
+publish_to: "none"
 version: 0.1.0
 
 environment:
@@ -9,6 +9,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+
+  get: ^4.7.2
 
 dev_dependencies:
   flutter_test:
@@ -20,7 +22,6 @@ flutter_icons:
   android: true
   ios: true
   image_path: "assets/icons/logoya_app.png"
-  
 
 flutter:
   uses-material-design: true

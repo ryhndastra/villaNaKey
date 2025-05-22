@@ -19,7 +19,8 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBarApp(onLoginPressed: () => _goToLogin(context)),
-      body: Center(child: Text("Home Page")),
+      body: Center(child: Text("Home Page"),
+      ),
     );
   }
 }
