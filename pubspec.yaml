@@ -4,13 +4,15 @@ publish_to: "none"
 version: 0.1.0
 
 environment:
-  sdk: ^3.7.2
+  sdk: ">=3.7.2 <4.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
 
   get: ^4.7.2
+  cupertino_icons: ^1.0.2
+  curved_navigation_bar: ^1.0.3
 
 dev_dependencies:
   flutter_test:
