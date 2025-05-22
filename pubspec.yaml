@@ -19,10 +19,12 @@ dev_dependencies:
 flutter_icons:
   android: true
   ios: true
-  image_path: "assets/images/logoya.png"
+  image_path: "assets/icons/logoya_app.png"
+  
 
 flutter:
   uses-material-design: true
 
   assets:
     - assets/images/
+    - assets/icons/
