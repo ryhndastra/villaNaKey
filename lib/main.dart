@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:villanakey/components/splash_page.dart';
-import 'package:villanakey/pages/home_page.dart';
 import 'package:villanakey/pages/login_page.dart';
+import 'package:villanakey/components/bottom_bar.dart'; // ganti dari home_page.dart
 
 void main() {
   runApp(const MainApp());
@@ -17,7 +17,7 @@ class MainApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => const SplashPage(),
-        '/home': (context) => const HomePage(),
+        '/home': (context) => const CustomBottomBar(),
         '/login': (context) => const LoginPage(),
       },
     );
