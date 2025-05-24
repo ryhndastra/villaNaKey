@@ -22,7 +22,8 @@ class LoginPage extends StatelessWidget {
                 const SizedBox(height: 20),
                 Container(
                   alignment: Alignment.center,
-                  child: Image.asset('assets/icons/logoya_app.png',
+                  child: Image.asset(
+                    'assets/icons/logoya_app.png',
                   height: 150,
                   ),
                 ),
@@ -73,7 +74,7 @@ class LoginPage extends StatelessWidget {
               const Text("Don't have an account? "),
               InkWell(
                 onTap: () {
-                  print("Go to Sign Up");
+                  Navigator.pushNamed(context, '/signup');
                 },
                 child: const Text(
                   "Sign Up",
