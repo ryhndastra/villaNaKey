@@ -5,7 +5,6 @@ class UserSettings extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    AppBar(title: Text("Settings"), leading: BackButton());
     return Scaffold(
       appBar: AppBar(
         title: Text('Settings'),
