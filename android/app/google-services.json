@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "154455470431",
+    "project_id": "villanakey-17e14",
+    "storage_bucket": "villanakey-17e14.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:154455470431:android:76f0e62e0a00b159d946ea",
+        "android_client_info": {
+          "package_name": "com.example.villanakey"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBbzYVW7VUr10XHlndQuMnwTo71lE6jaZA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
