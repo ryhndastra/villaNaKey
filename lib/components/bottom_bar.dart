@@ -5,26 +5,30 @@ import 'package:villanakey/pages/home_page.dart';
 import 'package:villanakey/pages/reservation.dart';
 
 class CustomBottomBar extends StatefulWidget {
-  const CustomBottomBar({super.key});
+  final int initialIndex;
+  const CustomBottomBar({super.key, this.initialIndex = 0});
 
   @override
   State<CustomBottomBar> createState() => _CustomBottomBarState();
 }
 
 class _CustomBottomBarState extends State<CustomBottomBar> {
-  int _selectedIndex = 0;
+  late int _selectedIndex;
 
-  final List<PreferredSizeWidget> _appBars = [
-    AppBarApp(), // Untuk Home
-    AppBarApp(), // Untuk Reservation
-  ];
+  final List<PreferredSizeWidget> _appBars = [AppBarApp(), AppBarApp()];
 
   final List<Widget> _pages = [HomePage(), Reservation()];
 
   @override
+  void initState() {
+    super.initState();
+    _selectedIndex = widget.initialIndex;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _appBars[_selectedIndex],
+      appBar: _selectedIndex == 0 ? null : _appBars[_selectedIndex],
       body: _pages[_selectedIndex],
       bottomNavigationBar: CurvedNavigationBar(
         index: _selectedIndex,
