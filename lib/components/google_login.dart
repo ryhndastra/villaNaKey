@@ -1,28 +1,20 @@
 import 'package:flutter/material.dart';
 
 class GoogleLogin extends StatelessWidget {
-  const GoogleLogin({super.key});
+  final String label;
+
+  const GoogleLogin({super.key, this.label = 'Continue with Google'});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const SizedBox(height: 15),
-        const Text(
-          '-Or Sign in with-',
-          style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        const SizedBox(height: 20),
-
         /// Google Button Full Width
         SizedBox(
-          width: double.infinity, // ← ini bikin tombol full lebar
+          width: double.infinity,
           child: ElevatedButton(
             onPressed: () {
-              print("Sign in with Google");
+              print(label);
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.white,
@@ -36,15 +28,11 @@ class GoogleLogin extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Image.asset(
-                  'assets/images/google.png',
-                  height: 30,
-                  width: 30,
-                ),
+                Image.asset('assets/images/google.png', height: 30, width: 30),
                 const SizedBox(width: 10),
-                const Text(
-                  'Continue with Google',
-                  style: TextStyle(
+                Text(
+                  label,
+                  style: const TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.w600,
                   ),
