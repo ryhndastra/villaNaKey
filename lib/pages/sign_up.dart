@@ -230,6 +230,7 @@ class _SignUpState extends State<SignUp> {
                 const SizedBox(height: 20),
 
                 const GoogleLogin(label: "Sign Up With Google"),
+                const SizedBox(height: 20),
               ],
             ),
           ),
