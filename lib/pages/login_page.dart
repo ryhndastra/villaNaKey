@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:villanakey/components/button.dart';
 import 'package:villanakey/components/google_login.dart';
-import 'package:villanakey/components/text.login.form.dart';
+import 'package:villanakey/components/text_login_form.dart';
 
 class LoginPage extends StatelessWidget {
   LoginPage({super.key});
@@ -22,7 +22,8 @@ class LoginPage extends StatelessWidget {
                 const SizedBox(height: 20),
                 Container(
                   alignment: Alignment.center,
-                  child: Image.asset('assets/icons/logoya_app.png',
+                  child: Image.asset(
+                    'assets/icons/logoya_app.png',
                   height: 150,
                   ),
                 ),
@@ -73,7 +74,7 @@ class LoginPage extends StatelessWidget {
               const Text("Don't have an account? "),
               InkWell(
                 onTap: () {
-                  print("Go to Sign Up");
+                  Navigator.pushNamed(context, '/signup');
                 },
                 child: const Text(
                   "Sign Up",
