@@ -1,12 +1,19 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:villanakey/components/appbar_app.dart';
 import 'package:villanakey/pages/home_page.dart';
 import 'package:villanakey/pages/reservation.dart';
+import 'package:villanakey/providers/user_provider.dart';
 
 class CustomBottomBar extends StatefulWidget {
   final int initialIndex;
-  const CustomBottomBar({super.key, this.initialIndex = 0});
+  final bool showWelcome;
+  const CustomBottomBar({
+    super.key,
+    this.initialIndex = 0,
+    this.showWelcome = false,
+  });
 
   @override
   State<CustomBottomBar> createState() => _CustomBottomBarState();
@@ -15,20 +22,30 @@ class CustomBottomBar extends StatefulWidget {
 class _CustomBottomBarState extends State<CustomBottomBar> {
   late int _selectedIndex;
 
-  final List<PreferredSizeWidget> _appBars = [AppBarApp(), AppBarApp()];
-
   final List<Widget> _pages = [HomePage(), Reservation()];
 
   @override
   void initState() {
     super.initState();
     _selectedIndex = widget.initialIndex;
+
+    Future.microtask(() async {
+      final userProvider = Provider.of<UserProvider>(context, listen: false);
+      await userProvider.fetchUser();
+
+      if (widget.showWelcome && mounted) {
+        final name = userProvider.user?.name ?? 'Pengguna';
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Halo, $name!')));
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _selectedIndex == 0 ? null : _appBars[_selectedIndex],
+      appBar: const AppBarApp(),
       body: _pages[_selectedIndex],
       bottomNavigationBar: CurvedNavigationBar(
         index: _selectedIndex,

@@ -1,16 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:villanakey/providers/user_provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class UserSettings extends StatelessWidget {
   const UserSettings({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final userProvider = Provider.of<UserProvider>(context);
+    final user = userProvider.user;
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('Settings'),
+        title: const Text('Settings'),
         centerTitle: true,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios_new_rounded),
+          icon: const Icon(Icons.arrow_back_ios_new_rounded),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -20,141 +26,133 @@ class UserSettings extends StatelessWidget {
           child: Container(color: Colors.grey.shade500, height: 1),
         ),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Image.asset(
-                      'assets/icons/profile_circle.png',
-                      width: 25,
-                      height: 25,
-                      color: const Color.fromARGB(255, 122, 122, 122),
-                    ),
-                    SizedBox(width: 12),
-                    Text(
-                      "Account",
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w300,
-                        color: Colors.grey.shade900,
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 16),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 50),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
-                          Text(
-                            "Username : Ferdian Tjahardhi",
-                            style: TextStyle(
-                              fontWeight: FontWeight.w300,
-                              fontSize: 16,
-                              color: Colors.black,
+      body:
+          user == null
+              ? const Center(child: CircularProgressIndicator())
+              : Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Image.asset(
+                              'assets/icons/profile_circle.png',
+                              width: 25,
+                              height: 25,
+                              color: const Color.fromARGB(255, 122, 122, 122),
                             ),
-                          ),
-                          SizedBox(height: 13),
-                          Text(
-                            "Email        : ferdian@gmail.com",
-                            style: TextStyle(
-                              fontWeight: FontWeight.w300,
-                              fontSize: 16,
-                              color: Colors.black,
+                            const SizedBox(width: 12),
+                            Text(
+                              "Account",
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w300,
+                                color: Colors.grey.shade900,
+                              ),
                             ),
-                          ),
-                          SizedBox(height: 13),
-                          Text(
-                            "Number     : 0895371933308",
-                            style: TextStyle(
-                              fontWeight: FontWeight.w300,
-                              fontSize: 16,
-                              color: Colors.black,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 24),
-              ],
-            ),
-          ),
-          Divider(thickness: 1, height: 1, color: Colors.grey.shade500),
-
-          SizedBox(height: 24),
-
-          //Change Information Account
-          
-          Padding(
-            padding: const EdgeInsets.only(left: 15),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Image.asset(
-                      'assets/icons/information_circle.png',
-                      width: 25,
-                      height: 25,
-                      color: const Color.fromARGB(255, 122, 122, 122),
-                    ),
-                    SizedBox(width: 12),
-                    Text(
-                      "Change Information Account",
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w300,
-                        color: Colors.grey.shade900,
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 16),
-                Padding(
-                  padding: const EdgeInsets.only(left: 50),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      InkWell(
-                        onTap: () {
-                          Navigator.pushNamed(context, '/changeinfo');
-                        },
-                        child: Text(
-                          "Change Information",
-                          style: TextStyle(
-                            fontWeight: FontWeight.w300,
-                            fontSize: 16,
-                            color: Colors.black,
+                          ],
+                        ),
+                        const SizedBox(height: 16),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 50),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Username : ${user.name}",
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w300,
+                                  fontSize: 16,
+                                  color: Colors.black,
+                                ),
+                              ),
+                              const SizedBox(height: 13),
+                              Text(
+                                "Email        : ${user.email}",
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w300,
+                                  fontSize: 16,
+                                  color: Colors.black,
+                                ),
+                              ),
+                              const SizedBox(height: 13),
+                              Text(
+                                "Number     : ${user.phone}",
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w300,
+                                  fontSize: 16,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                      ),
-                    ],
+                        const SizedBox(height: 24),
+                      ],
+                    ),
                   ),
-                ),
-                SizedBox(height: 24),
-              ],
-            ),
-          ),
-        ],
-      ),
+                  Divider(thickness: 1, height: 1, color: Colors.grey.shade500),
+                  const SizedBox(height: 24),
 
-      // Button Logout
+                  // Change Info Section
+                  Padding(
+                    padding: const EdgeInsets.only(left: 15),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Image.asset(
+                              'assets/icons/information_circle.png',
+                              width: 25,
+                              height: 25,
+                              color: const Color.fromARGB(255, 122, 122, 122),
+                            ),
+                            const SizedBox(width: 12),
+                            Text(
+                              "Change Information Account",
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w300,
+                                color: Colors.grey.shade900,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 16),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 50),
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.pushNamed(context, '/changeinfo');
+                            },
+                            child: const Text(
+                              "Change Information",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w300,
+                                fontSize: 16,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 24),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+
+      // Logout Button
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(16),
         child: ElevatedButton(
-          onPressed: () {
+          onPressed: () async {
+            await FirebaseAuth.instance.signOut();
             Navigator.pushNamedAndRemoveUntil(
               context,
               '/login',

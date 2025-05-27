@@ -16,260 +16,217 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(
-      slivers: [
-        SliverAppBar(
-          floating: true,
-          snap: true,
-          backgroundColor: const Color(0xFF819766),
-          title: Row(
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          // Hero section
+          Stack(
+            alignment: Alignment.center,
             children: [
-              Image.asset('assets/images/logoya.png', width: 55, height: 55),
-              const SizedBox(width: 8),
+              Image.asset(
+                'assets/images/Hero.png',
+                width: double.infinity,
+                height: 200,
+                fit: BoxFit.cover,
+              ),
               const Text(
-                "Villanakey",
+                'Selamat Datang di Villa Na Key',
                 style: TextStyle(
-                  fontFamily: 'Poppins',
-                  fontSize: 20,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
                   color: Colors.white,
+                  fontFamily: 'Poppins',
+                  shadows: [
+                    Shadow(
+                      offset: Offset(2, 2),
+                      blurRadius: 6,
+                      color: Colors.black54,
+                    ),
+                  ],
                 ),
               ),
             ],
           ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/login');
-              },
-              child: const Text(
-                "Login",
-                style: TextStyle(
-                  fontFamily: 'Poppins',
-                  fontSize: 22,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-          ],
-        ),
-        SliverList(
-          delegate: SliverChildListDelegate([
-            // Hero section
-            Stack(
-              alignment: Alignment.center,
+          const SizedBox(height: 20),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Image.asset(
-                  'assets/images/Hero.png',
-                  width: double.infinity,
-                  height: 200,
-                  fit: BoxFit.cover,
+                Expanded(
+                  child: Text(
+                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex commodo.",
+                    textAlign: TextAlign.justify,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontFamily: 'Poppins',
+                      height: 1.3,
+                    ),
+                  ),
                 ),
-                const Text(
-                  'Selamat Datang di Villa Na Key',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                    fontFamily: 'Poppins',
-                    shadows: [
-                      Shadow(
-                        offset: Offset(2, 2),
-                        blurRadius: 6,
-                        color: Colors.black54,
-                      ),
-                    ],
+                const SizedBox(width: 12),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: Image.asset(
+                    'assets/images/about.jpg',
+                    height: 150,
+                    width: 150,
+                    fit: BoxFit.cover,
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 20),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+          ),
+          const SizedBox(height: 20),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: Image.asset(
+                'assets/images/villa_main.jpg',
+                width: double.infinity,
+                height: 200,
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Villa Na Key',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  'Rp. 1.500.000/day',
+                  style: TextStyle(color: Colors.green),
+                ),
+                SizedBox(height: 4),
+                Row(
+                  children: [
+                    Icon(Icons.location_on, size: 16),
+                    SizedBox(width: 4),
+                    Text(
+                      'Cihanjawar Bojong, Purwakarta',
+                      style: TextStyle(fontWeight: FontWeight.w300),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Icon(Icons.phone, size: 16),
+                    SizedBox(width: 4),
+                    Text(
+                      '081909333132',
+                      style: TextStyle(fontWeight: FontWeight.w300),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 16),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
               child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Expanded(
-                    child: Text(
-                      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex commodo.",
-                      textAlign: TextAlign.justify,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontFamily: 'Poppins',
-                        height: 1.3,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: Image.asset(
-                      'assets/images/about.jpg',
-                      height: 150,
-                      width: 150,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
+                  _buildFacilityIcon(Icons.group, "10 orang"),
+                  _buildFacilityIcon(Icons.bed, "4 Kasur"),
+                  _buildFacilityIcon(Icons.bathroom, "2 Toilet"),
+                  _buildFacilityIcon(Icons.pool, "1 Kolam"),
+                  _buildFacilityIcon(Icons.wifi, "WiFi"),
                 ],
               ),
             ),
-            const SizedBox(height: 20),
-            Padding(
+          ),
+          const SizedBox(height: 20),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            child: Text(
+              "Overview",
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+          ),
+          const SizedBox(height: 10),
+          SizedBox(
+            height: 120,
+            child: PageView.builder(
+              itemCount: 6,
+              controller: PageController(viewportFraction: 0.8),
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 4),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: Image.asset(
+                      'assets/images/villa_$index.jpg',
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 16, top: 14),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: SizedBox(
+                width: 200,
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder:
+                            (context) => const CustomBottomBar(initialIndex: 1),
+                      ),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF819766),
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  child: const Text("Booking"),
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 20),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            child: Text(
+              "Lokasi",
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+          ),
+          const SizedBox(height: 10),
+          GestureDetector(
+            onTap: _launchMap,
+            child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(12),
                 child: Image.asset(
-                  'assets/images/villa_main.jpg',
+                  'assets/images/location.png',
                   width: double.infinity,
-                  height: 200,
+                  height: 175,
                   fit: BoxFit.cover,
                 ),
               ),
             ),
-            const SizedBox(height: 12),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Villa Na Key',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                  Text(
-                    'Rp. 1.500.000/day',
-                    style: TextStyle(color: Colors.green),
-                  ),
-                  SizedBox(height: 4),
-                  Row(
-                    children: [
-                      Icon(Icons.location_on, size: 16),
-                      SizedBox(width: 4),
-                      Text(
-                        'Cihanjawar Bojong, Purwakarta',
-                        style: TextStyle(fontWeight: FontWeight.w300),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Icon(Icons.phone, size: 16),
-                      SizedBox(width: 4),
-                      Text(
-                        '081909333132',
-                        style: TextStyle(fontWeight: FontWeight.w300),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 16),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    _buildFacilityIcon(Icons.group, "10 orang"),
-                    _buildFacilityIcon(Icons.bed, "4 Kasur"),
-                    _buildFacilityIcon(Icons.bathroom, "2 Toilet"),
-                    _buildFacilityIcon(Icons.pool, "1 Kolam"),
-                    _buildFacilityIcon(Icons.wifi, "WiFi"),
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(height: 20),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              child: Text(
-                "Overview",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-            ),
-            const SizedBox(height: 10),
-            SizedBox(
-              height: 120,
-              child: PageView.builder(
-                itemCount: 6,
-                controller: PageController(viewportFraction: 0.8),
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 4),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
-                      child: Image.asset(
-                        'assets/images/villa_$index.jpg',
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
-
-            Padding(
-              padding: const EdgeInsets.only(left: 16, top: 14),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: SizedBox(
-                  width: 200,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder:
-                              (context) =>
-                                  const CustomBottomBar(initialIndex: 1),
-                        ),
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF819766),
-                      foregroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
-                    child: const Text("Booking"),
-                  ),
-                ),
-              ),
-            ),
-
-            const SizedBox(height: 20),
-
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              child: Text(
-                "Lokasi",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-            ),
-
-            const SizedBox(height: 10),
-
-            GestureDetector(
-              onTap: _launchMap,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(12),
-                  child: Image.asset(
-                    'assets/images/location.png',
-                    width: double.infinity,
-                    height: 175,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-            ),
-
-            const SizedBox(height: 40),
-          ]),
-        ),
-      ],
+          ),
+          const SizedBox(height: 40),
+        ],
+      ),
     );
   }
 

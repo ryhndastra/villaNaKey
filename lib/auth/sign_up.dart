@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:villanakey/components/button.dart';
 import 'package:villanakey/components/google_login.dart';
@@ -210,7 +212,13 @@ class _SignUpState extends State<SignUp> {
                   textBtn: 'Sign Up',
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      Navigator.pushNamed(context, '/home');
+                      registerWithEmail(
+                        context,
+                        nameController.text.trim(),
+                        emailController.text.trim(),
+                        phoneController.text.trim(),
+                        passwordController.text.trim(),
+                      );
                     }
                   },
                 ),
@@ -257,5 +265,52 @@ class _SignUpState extends State<SignUp> {
         ),
       ),
     );
+  }
+}
+
+Future<void> registerWithEmail(
+  BuildContext context,
+  String name,
+  String email,
+  String phone,
+  String password,
+) async {
+  try {
+    final userCredential = await FirebaseAuth.instance
+        .createUserWithEmailAndPassword(email: email, password: password);
+
+    final uid = userCredential.user!.uid;
+
+    await FirebaseFirestore.instance.collection('users').doc(uid).set({
+      'name': name,
+      'email': email,
+      'phone': '+62$phone',
+      'createdAt': FieldValue.serverTimestamp(),
+    });
+
+    await userCredential.user!.sendEmailVerification();
+
+    showDialog(
+      context: context,
+      builder:
+          (context) => AlertDialog(
+            title: const Text('Verifikasi Email'),
+            content: Text(
+              'Kami telah mengirimkan tautan verifikasi ke $email. Silakan periksa email Anda.',
+            ),
+            actions: [
+              TextButton(
+                child: const Text('OK'),
+                onPressed: () {
+                  Navigator.pushReplacementNamed(context, '/login');
+                },
+              ),
+            ],
+          ),
+    );
+  } on FirebaseAuthException catch (e) {
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(e.message ?? 'Registrasi gagal')));
   }
 }

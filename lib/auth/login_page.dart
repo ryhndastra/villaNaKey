@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:villanakey/components/bottom_bar.dart';
 import 'package:villanakey/components/button.dart';
 import 'package:villanakey/components/google_login.dart';
 
@@ -113,7 +115,18 @@ class _LoginPageState extends State<LoginPage> {
                 ),
 
                 const SizedBox(height: 16),
-                Button(),
+
+                Button(
+                  textBtn: 'Sign In',
+                  onPressed: () {
+                    loginWithEmail(
+                      context,
+                      emailController.text.trim(),
+                      passwordController.text.trim(),
+                    );
+                  },
+                ),
+
                 const SizedBox(height: 20),
                 Row(
                   children: const [
@@ -155,5 +168,38 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
+  }
+}
+
+Future<void> loginWithEmail(
+  BuildContext context,
+  String email,
+  String password,
+) async {
+  try {
+    final userCredential = await FirebaseAuth.instance
+        .signInWithEmailAndPassword(email: email, password: password);
+
+    if (userCredential.user!.emailVerified) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder:
+              (context) =>
+                  const CustomBottomBar(initialIndex: 0, showWelcome: true),
+        ),
+      );
+    } else {
+      await FirebaseAuth.instance.signOut();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Email belum diverifikasi. Cek kotak masuk kamu.'),
+        ),
+      );
+    }
+  } on FirebaseAuthException catch (e) {
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(e.message ?? 'Login gagal')));
   }
 }
