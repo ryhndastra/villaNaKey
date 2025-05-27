@@ -12,9 +12,7 @@ import 'package:villanakey/providers/user_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform, // ← penting
-  );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   runApp(
     MultiProvider(
@@ -36,9 +34,7 @@ class MainApp extends StatelessWidget {
         '/': (context) => SplashPage(),
         '/home': (context) => CustomBottomBar(),
         '/login': (context) => LoginPage(),
-        '/settings':
-            (context) =>
-                UserSettings(), // Navigator sementara, Karena belum ada tombol untuk pindah ke user setting
+        '/settings': (context) => UserSettings(),
         '/signup': (context) => SignUp(),
         '/changeinfo': (context) => ChangeInformationPage(),
       },

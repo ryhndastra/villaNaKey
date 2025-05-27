@@ -36,14 +36,12 @@ class AppBarApp extends StatelessWidget implements PreferredSizeWidget {
                       icon: const Icon(Icons.person, color: Colors.white),
                       tooltip: 'Profil Saya',
                       onPressed: () {
-                        // Tampilkan snackbar
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text("Settings"),
                             duration: const Duration(seconds: 2),
                           ),
                         );
-                        // Arahkan ke halaman pengaturan
                         Navigator.pushNamed(context, '/settings');
                       },
                     )

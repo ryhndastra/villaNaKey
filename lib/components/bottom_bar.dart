@@ -33,7 +33,6 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
       final userProvider = Provider.of<UserProvider>(context, listen: false);
       await userProvider.fetchUser();
 
-      // Tampilkan snackbar jika login berhasil
       if (widget.showWelcome && mounted) {
         final name = userProvider.user?.name ?? 'Pengguna';
         ScaffoldMessenger.of(

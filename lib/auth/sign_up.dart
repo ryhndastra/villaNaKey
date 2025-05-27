@@ -281,7 +281,6 @@ Future<void> registerWithEmail(
 
     final uid = userCredential.user!.uid;
 
-    // 🔥 Simpan data user ke Firestore
     await FirebaseFirestore.instance.collection('users').doc(uid).set({
       'name': name,
       'email': email,
@@ -289,10 +288,8 @@ Future<void> registerWithEmail(
       'createdAt': FieldValue.serverTimestamp(),
     });
 
-    // Kirim verifikasi email
     await userCredential.user!.sendEmailVerification();
 
-    // Tampilkan dialog sukses
     showDialog(
       context: context,
       builder:
