@@ -5,6 +5,7 @@ import 'package:villanakey/components/appbar_app.dart';
 import 'package:villanakey/pages/home_page.dart';
 import 'package:villanakey/pages/reservation.dart';
 import 'package:villanakey/providers/user_provider.dart';
+import 'package:villanakey/service/connectivity_service.dart';
 
 class CustomBottomBar extends StatefulWidget {
   final int initialIndex;
@@ -40,6 +41,15 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
         ).showSnackBar(SnackBar(content: Text('Halo, $name!')));
       }
     });
+  }
+
+  @override
+  void dispose() {
+    Provider.of<ConnectivityService>(
+      context,
+      listen: false,
+    ).disposeConnectionListener();
+    super.dispose();
   }
 
   @override

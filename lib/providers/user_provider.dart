@@ -9,6 +9,9 @@ class UserProvider extends ChangeNotifier {
   UserModel? get user => _user;
 
   Future<void> fetchUser() async {
+    _user = null;
+    notifyListeners();
+
     final uid = FirebaseAuth.instance.currentUser?.uid;
     if (uid != null) {
       final doc =

@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -17,6 +18,7 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   bool _obscurePassword = true;
+  bool _isLoading = false;
 
   final RegExp _passwordRegex = RegExp(
     r'^(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$',
@@ -45,130 +47,150 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  void handleLogin() async {
+    setState(() => _isLoading = true);
+    try {
+      await loginWithEmail(
+        context,
+        emailController.text.trim(),
+        passwordController.text.trim(),
+      );
+    } finally {
+      setState(() => _isLoading = false);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: SafeArea(
-          child: Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(15.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 20),
-                Container(
-                  alignment: Alignment.center,
-                  child: Image.asset(
-                    'assets/icons/logoya_app.png',
-                    height: 150,
-                  ),
-                ),
-                const SizedBox(height: 40),
-                const Text(
-                  'Login to Your Account',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                const SizedBox(height: 15),
-
-                // Email Field
-                formFieldWrapper(
-                  TextFormField(
-                    controller: emailController,
-                    keyboardType: TextInputType.emailAddress,
-                    decoration: noBorderInput('Email'),
-                  ),
-                ),
-
-                // Password Field
-                formFieldWrapper(
-                  TextFormField(
-                    controller: passwordController,
-                    obscureText: _obscurePassword,
-                    decoration: noBorderInput(
-                      'Password',
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          _obscurePassword
-                              ? Icons.visibility_off
-                              : Icons.visibility,
+    return Stack(
+      children: [
+        Scaffold(
+          body: SingleChildScrollView(
+            child: SafeArea(
+              child: Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(15.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 20),
+                    Container(
+                      alignment: Alignment.center,
+                      child: Image.asset(
+                        'assets/icons/logoya_app.png',
+                        height: 150,
+                      ),
+                    ),
+                    const SizedBox(height: 40),
+                    const Text(
+                      'Login to Your Account',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    const SizedBox(height: 15),
+                    formFieldWrapper(
+                      TextFormField(
+                        controller: emailController,
+                        keyboardType: TextInputType.emailAddress,
+                        decoration: noBorderInput('Email'),
+                      ),
+                    ),
+                    formFieldWrapper(
+                      TextFormField(
+                        controller: passwordController,
+                        obscureText: _obscurePassword,
+                        decoration: noBorderInput(
+                          'Password',
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _obscurePassword
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _obscurePassword = !_obscurePassword;
+                              });
+                            },
+                          ),
                         ),
-                        onPressed: () {
-                          setState(() {
-                            _obscurePassword = !_obscurePassword;
-                          });
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Enter password';
+                          }
+                          if (!_passwordRegex.hasMatch(value)) {
+                            return 'Min 8 chars, 1 uppercase, 1 number';
+                          }
+                          return null;
                         },
                       ),
                     ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Enter password';
-                      }
-                      if (!_passwordRegex.hasMatch(value)) {
-                        return 'Min 8 chars, 1 uppercase, 1 number';
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-
-                const SizedBox(height: 16),
-
-                Button(
-                  textBtn: 'Sign In',
-                  onPressed: () {
-                    loginWithEmail(
-                      context,
-                      emailController.text.trim(),
-                      passwordController.text.trim(),
-                    );
-                  },
-                ),
-
-                const SizedBox(height: 20),
-                Row(
-                  children: const [
-                    Expanded(child: Divider()),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 10),
-                      child: Text("or sign in with"),
+                    const SizedBox(height: 16),
+                    Button(textBtn: 'Sign In', onPressed: handleLogin),
+                    const SizedBox(height: 20),
+                    Row(
+                      children: const [
+                        Expanded(child: Divider()),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 10),
+                          child: Text("or sign in with"),
+                        ),
+                        Expanded(child: Divider()),
+                      ],
                     ),
-                    Expanded(child: Divider()),
+                    const SizedBox(height: 20),
+                    const GoogleLogin(),
                   ],
                 ),
-                const SizedBox(height: 20),
-                const GoogleLogin(),
-              ],
+              ),
+            ),
+          ),
+          bottomNavigationBar: SafeArea(
+            child: Container(
+              height: 50,
+              color: Colors.white,
+              alignment: Alignment.center,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text("Don't have an account? "),
+                  InkWell(
+                    onTap: () {
+                      Navigator.pushNamed(context, '/signup');
+                    },
+                    child: const Text(
+                      "Sign Up",
+                      style: TextStyle(color: Color(0xFF819766)),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
-      ),
-      bottomNavigationBar: SafeArea(
-        child: Container(
-          height: 50,
-          color: Colors.white,
-          alignment: Alignment.center,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text("Don't have an account? "),
-              InkWell(
-                onTap: () {
-                  Navigator.pushNamed(context, '/signup');
-                },
-                child: const Text(
-                  "Sign Up",
-                  style: TextStyle(color: Color(0xFF819766)),
+
+        // Loader with blur
+        if (_isLoading)
+          Positioned.fill(
+            child: Stack(
+              children: [
+                BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
+                  child: Container(color: Colors.black.withOpacity(0.2)),
                 ),
-              ),
-            ],
+                const Center(
+                  child: CircularProgressIndicator(
+                    color: Color(0xff819766),
+                    strokeWidth: 4,
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-      ),
+      ],
     );
   }
 }
@@ -202,5 +224,9 @@ Future<void> loginWithEmail(
     ScaffoldMessenger.of(
       context,
     ).showSnackBar(SnackBar(content: Text(e.message ?? 'Login gagal')));
+  } catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Terjadi kesalahan. Silakan coba lagi.')),
+    );
   }
 }

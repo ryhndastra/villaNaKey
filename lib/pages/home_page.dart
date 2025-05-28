@@ -1,9 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:villanakey/components/bottom_bar.dart';
+import 'package:villanakey/components/skeleton_loader.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  bool isLoading = true;
+  @override
+  void initState() {
+    super.initState();
+    // Simulasi loading data
+    Future.delayed(const Duration(seconds: 2), () {
+      setState(() {
+        isLoading = false;
+      });
+    });
+  }
 
   void _launchMap() async {
     const url = 'https://maps.app.goo.gl/9mDXt5skcUyDMjoy8';
@@ -16,6 +34,10 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (isLoading) {
+      return const SkeletonLoader();
+    }
+
     return SingleChildScrollView(
       child: Column(
         children: [
