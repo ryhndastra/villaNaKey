@@ -18,6 +18,7 @@ dependencies:
   cloud_firestore: ^5.6.8
   provider: ^6.0.0
   google_sign_in: ^6.3.0
+  connectivity_plus: ^6.1.4
 
 
 dev_dependencies:
