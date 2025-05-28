@@ -1,8 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:villanakey/components/bottom_bar.dart';
 import 'package:villanakey/components/button.dart';
 import 'package:villanakey/components/google_login.dart';
+import 'package:villanakey/providers/user_provider.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -181,20 +183,19 @@ Future<void> loginWithEmail(
         .signInWithEmailAndPassword(email: email, password: password);
 
     if (userCredential.user!.emailVerified) {
+      await Provider.of<UserProvider>(context, listen: false).fetchUser();
+
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
           builder:
-              (context) =>
-                  const CustomBottomBar(initialIndex: 0, showWelcome: true),
+              (_) => const CustomBottomBar(initialIndex: 0, showWelcome: true),
         ),
       );
     } else {
       await FirebaseAuth.instance.signOut();
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Email belum diverifikasi. Cek kotak masuk kamu.'),
-        ),
+        const SnackBar(content: Text('Email belum diverifikasi.')),
       );
     }
   } on FirebaseAuthException catch (e) {
