@@ -72,7 +72,7 @@ class UserSettings extends StatelessWidget {
                               ),
                               const SizedBox(height: 13),
                               Text(
-                                "Email        : ${user.email}",
+                                "Email         : ${user.email}",
                                 style: const TextStyle(
                                   fontWeight: FontWeight.w300,
                                   fontSize: 16,
