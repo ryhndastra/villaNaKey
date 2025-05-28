@@ -1,5 +1,9 @@
+// Import tambahan
 import 'package:flutter/material.dart';
-import 'package:villanakey/components/edit_profile_form.dart';
+import 'package:provider/provider.dart';
+import 'package:villanakey/providers/user_provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ChangeInformationPage extends StatefulWidget {
   const ChangeInformationPage({super.key});
@@ -9,18 +13,154 @@ class ChangeInformationPage extends StatefulWidget {
 }
 
 class _ChangeInformationPageState extends State<ChangeInformationPage> {
-  final userNameController = TextEditingController();
-  final emailController = TextEditingController();
-  final numberController = TextEditingController();
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
+
+  Widget formFieldWrapper(Widget child) {
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 6, horizontal: 2),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(6),
+        boxShadow: const [
+          BoxShadow(color: Colors.black12, blurRadius: 3, offset: Offset(0, 1)),
+        ],
+      ),
+      child: child,
+    );
+  }
+
+  InputDecoration noBorderInput(String label, {Widget? suffixIcon}) {
+    return InputDecoration(
+      labelText: label,
+      border: InputBorder.none,
+      suffixIcon: suffixIcon,
+    );
+  }
+
+  Future<void> saveChanges() async {
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    final currentUser = FirebaseAuth.instance.currentUser;
+    final uid = currentUser?.uid;
+
+    if (uid == null) return;
+
+    final Map<String, dynamic> updatedData = {};
+
+    final newName = nameController.text.trim();
+    final newEmail = emailController.text.trim();
+    final newPhone = phoneController.text.trim();
+
+    if (newName.isNotEmpty && newName != userProvider.user?.name) {
+      updatedData['name'] = newName;
+    }
+
+    if (newEmail.isNotEmpty && newEmail != userProvider.user?.email) {
+      updatedData['email'] = newEmail;
+      await currentUser?.updateEmail(newEmail);
+    }
+
+    if (newPhone.isNotEmpty && newPhone != userProvider.user?.phone) {
+      updatedData['phone'] = newPhone;
+    }
+
+    if (updatedData.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Tidak ada data yang diubah')),
+      );
+      return;
+    }
+
+    try {
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(uid)
+          .update(updatedData);
+      await userProvider.fetchUser();
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Informasi berhasil diperbarui')),
+      );
+
+      Navigator.pop(context);
+    } catch (e) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Gagal memperbarui: $e')));
+    }
+  }
+
+  Future<void> showConfirmationDialog() async {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          title: Row(
+            children: const [
+              Icon(Icons.check, color: Color(0xff819766)),
+              SizedBox(width: 8),
+              Text(
+                'Konfirmasi Perubahan',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+          content: const Text(
+            'Apakah kamu yakin ingin menyimpan perubahan ini?',
+            style: TextStyle(fontSize: 15),
+          ),
+          actionsPadding: const EdgeInsets.only(bottom: 12, right: 12),
+          actions: [
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              child: const Text('Batal', style: TextStyle(color: Colors.white)),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xff819766),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              child: const Text(
+                'Simpan',
+                style: TextStyle(color: Colors.white),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+                saveChanges();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
+    final userProvider = Provider.of<UserProvider>(context);
+    final user = userProvider.user;
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('Edit Profile'),
+        title: const Text('Edit Profile'),
         centerTitle: true,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios_new_rounded),
+          icon: const Icon(Icons.arrow_back_ios_new_rounded),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -34,7 +174,7 @@ class _ChangeInformationPageState extends State<ChangeInformationPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: EdgeInsets.all(16),
+            padding: const EdgeInsets.all(16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -46,7 +186,7 @@ class _ChangeInformationPageState extends State<ChangeInformationPage> {
                       height: 30,
                       color: const Color.fromARGB(255, 122, 122, 122),
                     ),
-                    SizedBox(width: 12),
+                    const SizedBox(width: 12),
                     Text(
                       "Change Information Account",
                       style: TextStyle(
@@ -57,13 +197,12 @@ class _ChangeInformationPageState extends State<ChangeInformationPage> {
                     ),
                   ],
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Username Section
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 16),
+                    const Padding(
+                      padding: EdgeInsets.only(bottom: 16),
                       child: Text(
                         "Change Username",
                         style: TextStyle(
@@ -73,16 +212,17 @@ class _ChangeInformationPageState extends State<ChangeInformationPage> {
                         ),
                       ),
                     ),
-
-                    EditProfileForm(
-                      hintText: 'New Username',
-                      controller: userNameController,
+                    formFieldWrapper(
+                      TextFormField(
+                        controller: nameController,
+                        keyboardType: TextInputType.name,
+                        decoration: noBorderInput('${user?.name ?? ''}'),
+                      ),
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
 
-                    // Email Section
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 16),
+                    const Padding(
+                      padding: EdgeInsets.only(bottom: 16),
                       child: Text(
                         "Change Email",
                         style: TextStyle(
@@ -92,15 +232,17 @@ class _ChangeInformationPageState extends State<ChangeInformationPage> {
                         ),
                       ),
                     ),
-                    EditProfileForm(
-                      hintText: 'New Email',
-                      controller: emailController,
+                    formFieldWrapper(
+                      TextFormField(
+                        controller: emailController,
+                        keyboardType: TextInputType.emailAddress,
+                        decoration: noBorderInput('${user?.email ?? ''}'),
+                      ),
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
 
-                    // Number Section
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 16),
+                    const Padding(
+                      padding: EdgeInsets.only(bottom: 16),
                       child: Text(
                         "Change Number",
                         style: TextStyle(
@@ -110,11 +252,14 @@ class _ChangeInformationPageState extends State<ChangeInformationPage> {
                         ),
                       ),
                     ),
-                    EditProfileForm(
-                      hintText: 'New Number',
-                      controller: numberController,
+                    formFieldWrapper(
+                      TextFormField(
+                        controller: phoneController,
+                        keyboardType: TextInputType.phone,
+                        decoration: noBorderInput('${user?.phone ?? ''}'),
+                      ),
                     ),
-                    SizedBox(height: 24),
+                    const SizedBox(height: 24),
                   ],
                 ),
               ],
@@ -123,17 +268,13 @@ class _ChangeInformationPageState extends State<ChangeInformationPage> {
           Divider(thickness: 1, height: 1, color: Colors.grey.shade200),
         ],
       ),
-      // Button Save Changes
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(16),
         child: ElevatedButton(
-          onPressed: () {
-            print("Saved Change");
-          },
-
+          onPressed: showConfirmationDialog,
           style: ElevatedButton.styleFrom(
             shadowColor: Colors.black,
-            backgroundColor: Color(0xff819766),
+            backgroundColor: const Color(0xff819766),
             foregroundColor: Colors.white,
             padding: const EdgeInsets.symmetric(vertical: 14),
             shape: RoundedRectangleBorder(
