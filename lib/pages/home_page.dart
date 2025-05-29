@@ -77,7 +77,7 @@ class _HomePageState extends State<HomePage> {
               children: [
                 Expanded(
                   child: Text(
-                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex commodo.",
+                    "VillaNaKey terletak di kaki Gunung Burangrang, Cihanjawar Bojong, Purwakarta. Tempat yang sempurna untuk menikmati udara segar dan pemandangan alam yang asri, cocok untuk liburan santai dan melepas penat.",
                     textAlign: TextAlign.justify,
                     style: const TextStyle(
                       fontSize: 16,
