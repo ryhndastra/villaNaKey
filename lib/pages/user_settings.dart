@@ -159,6 +159,56 @@ class _UserSettingsState extends State<UserSettings> {
                           ),
                         ),
                         const SizedBox(height: 24),
+                        Divider(
+                          thickness: 1,
+                          height: 1,
+                          color: Colors.grey.shade500,
+                        ),
+                        const SizedBox(height: 24),
+
+                        Padding(
+                          padding: const EdgeInsets.only(left: 15),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.list_alt,
+                                    color: Color.fromARGB(255, 122, 122, 122),
+                                  ),
+                                  const SizedBox(width: 12),
+                                  Text(
+                                    "Reservation History",
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w300,
+                                      color: Colors.grey.shade900,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 16),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 50),
+                                child: InkWell(
+                                  onTap: () {
+                                    Navigator.pushNamed(context, '/orderlist');
+                                  },
+                                  child: const Text(
+                                    "Lihat Semua Reservasi",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w300,
+                                      fontSize: 16,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 24),
+                            ],
+                          ),
+                        ),
                       ],
                     ),
                   ),

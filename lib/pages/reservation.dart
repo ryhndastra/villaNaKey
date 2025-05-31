@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:provider/provider.dart';
+import 'package:villanakey/pages/payment_page.dart';
 import 'package:villanakey/providers/user_provider.dart';
 
 class Reservation extends StatefulWidget {
@@ -79,6 +80,8 @@ class _ReservationState extends State<Reservation> {
 
   Future<void> showConfirmationReservation() async {
     String tanggalInfo = '';
+    final DateTime? checkInDate = _rangeStart;
+    final DateTime? checkOutDate = _rangeEnd;
 
     if (_selectedDay != null) {
       tanggalInfo =
@@ -178,7 +181,17 @@ class _ReservationState extends State<Reservation> {
         ),
       );
 
-      Navigator.pushNamed(context, '/payment');
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder:
+              (_) => PaymentPage(
+                amountToPay: totalPrice,
+                checkIn: checkInDate,
+                checkOut: checkOutDate,
+              ),
+        ),
+      );
     }
   }
 
@@ -528,51 +541,33 @@ class _ReservationState extends State<Reservation> {
                           ),
                           child: Icon(
                             Icons.close,
-                            size: 26,
                             color:
                                 isDateSelected
-                                    ? Color(0xFF42754C)
-                                    : Colors.black12,
+                                    ? const Color(0xFF42754C)
+                                    : Colors.black26,
                           ),
                         ),
                       ),
-                      SizedBox(width: 15),
-                      Expanded(
-                        child: ElevatedButton(
-                          onPressed:
-                              isDateSelected
-                                  ? () {
-                                    showConfirmationReservation();
-                                  }
-                                  : null,
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor:
-                                isDateSelected
-                                    ? Color(0xFF4B7752)
-                                    : Colors.grey,
-                            padding: EdgeInsets.symmetric(vertical: 14),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
+
+                      // Tombol Booking
+                      ElevatedButton.icon(
+                        onPressed:
+                            isDateSelected ? showConfirmationReservation : null,
+                        icon: const Icon(Icons.calendar_month_rounded),
+                        label: const Text("Booking Sekarang"),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF42754C),
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 14.0,
+                            horizontal: 20.0,
                           ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                "Booking Now",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                              SizedBox(width: 12),
-                              Icon(
-                                Icons.arrow_forward,
-                                color: Colors.white,
-                                size: 22,
-                              ),
-                            ],
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          textStyle: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
                           ),
                         ),
                       ),

@@ -24,6 +24,8 @@ dependencies:
   http: ^0.13.6
   table_calendar: ^3.2.0
   intl: ^0.20.1
+  qr_flutter: ^4.1.0
+  mobile_scanner: ^3.5.2
 
 dev_dependencies:
   flutter_test:
