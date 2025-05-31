@@ -22,8 +22,8 @@ dependencies:
   shimmer: ^3.0.0
   fluttertoast: ^8.2.2
   http: ^0.13.6
-
-
+  table_calendar: ^3.2.0
+  intl: ^0.20.1
 
 dev_dependencies:
   flutter_test:
