@@ -54,7 +54,7 @@ class _BcaPaymentPageState extends State<BcaPaymentPage> {
         'checkIn': widget.checkIn?.toIso8601String() ?? '',
         'checkOut': widget.checkOut?.toIso8601String() ?? '',
         'amount': widget.amountToPay,
-        'status': 'Pembayaran erhasil',
+        'status': 'Pembayaran berhasil',
         'paymentMethod': 'Transfer BCA',
         'paymentTime': FieldValue.serverTimestamp(),
       });
@@ -66,7 +66,9 @@ class _BcaPaymentPageState extends State<BcaPaymentPage> {
 
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (_) => CustomBottomBar(initialIndex: 0)),
+          MaterialPageRoute(
+            builder: (_) => const CustomBottomBar(initialIndex: 0),
+          ),
         );
       }
     } catch (e) {
@@ -89,15 +91,23 @@ class _BcaPaymentPageState extends State<BcaPaymentPage> {
     ).format(widget.amountToPay);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Panduan Transfer'), centerTitle: true),
+      appBar: AppBar(
+        title: const Text('Panduan Transfer'),
+        centerTitle: true,
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.black,
+        elevation: 1,
+        automaticallyImplyLeading: true,
+      ),
+      backgroundColor: const Color(0xFFF5F5F5),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            const Text(
               'Total yang harus dibayar:',
-              style: TextStyle(fontSize: 18, color: Colors.grey[700]),
+              style: TextStyle(fontSize: 18, color: Colors.grey),
             ),
             const SizedBox(height: 6),
             Text(
@@ -114,11 +124,11 @@ class _BcaPaymentPageState extends State<BcaPaymentPage> {
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
             ),
             const SizedBox(height: 12),
-            Text(
+            const Text(
               '1. Buka aplikasi m-BCA atau ATM BCA\n'
               '2. Pilih menu Transfer > ke Rek BCA\n'
-              '3. Masukkan nomor rekening tujuan berikut:\n',
-              style: const TextStyle(fontSize: 16),
+              '3. Masukkan nomor rekening tujuan berikut:',
+              style: TextStyle(fontSize: 16),
             ),
             Container(
               margin: const EdgeInsets.symmetric(vertical: 8),

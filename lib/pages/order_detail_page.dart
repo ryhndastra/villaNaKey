@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:villanakey/pages/order_list_page.dart';
+import 'package:villanakey/components/bottom_bar.dart';
 
 class OrderDetailPage extends StatelessWidget {
   final String reservationId;
@@ -91,7 +91,9 @@ class OrderDetailPage extends StatelessWidget {
                     child: ElevatedButton(
                       onPressed: () {
                         Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(builder: (_) => OrderListPage()),
+                          MaterialPageRoute(
+                            builder: (_) => CustomBottomBar(initialIndex: 0),
+                          ),
                         );
                       },
                       style: ElevatedButton.styleFrom(
@@ -102,7 +104,7 @@ class OrderDetailPage extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(vertical: 14),
                       ),
                       child: const Text(
-                        'Lihat List Reservasi',
+                        'Kembali Ke Home',
                         style: TextStyle(
                           fontSize: 16,
                           color: Colors.white,
