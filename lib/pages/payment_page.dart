@@ -38,10 +38,12 @@ class _PaymentPageState extends State<PaymentPage> {
     );
 
     await Future.delayed(const Duration(milliseconds: 600));
-    Navigator.pop(context); // tutup loading dialog
+    Navigator.pop(context);
+
+    bool? result;
 
     if (selectedMethod == PaymentMethod.bankTransferBCA) {
-      Navigator.pushReplacement(
+      result = await Navigator.push<bool>(
         context,
         MaterialPageRoute(
           builder:
@@ -53,7 +55,7 @@ class _PaymentPageState extends State<PaymentPage> {
         ),
       );
     } else {
-      Navigator.pushReplacement(
+      result = await Navigator.push<bool>(
         context,
         MaterialPageRoute(
           builder:
@@ -65,6 +67,10 @@ class _PaymentPageState extends State<PaymentPage> {
         ),
       );
     }
+
+    if (result == true) {
+      Navigator.pop(context, true);
+    }
   }
 
   @override
@@ -72,99 +78,102 @@ class _PaymentPageState extends State<PaymentPage> {
     final formattedCheckIn = _formatDate(widget.checkIn);
     final formattedCheckOut = _formatDate(widget.checkOut);
 
-    return Scaffold(
-      backgroundColor: const Color(0xFFF6F6F6),
-      appBar: AppBar(
-        title: const Text('Payment Method'),
-        centerTitle: true,
-        leading: const BackButton(),
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
-        elevation: 0,
-      ),
-      body: Column(
-        children: [
-          const SizedBox(height: 8),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Column(
-                children: [
-                  ListTile(
-                    title: const Text(
-                      "Booking Dates",
-                      style: TextStyle(fontWeight: FontWeight.bold),
+    return WillPopScope(
+      onWillPop: () async => true,
+      child: Scaffold(
+        backgroundColor: const Color(0xFFF6F6F6),
+        appBar: AppBar(
+          title: const Text('Payment Method'),
+          centerTitle: true,
+          automaticallyImplyLeading: true,
+          backgroundColor: Colors.white,
+          foregroundColor: Colors.black,
+          elevation: 0,
+        ),
+        body: Column(
+          children: [
+            const SizedBox(height: 8),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Column(
+                  children: [
+                    ListTile(
+                      title: const Text(
+                        "Booking Dates",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      subtitle: Text(
+                        "Check-in: $formattedCheckIn\nCheck-out: $formattedCheckOut",
+                      ),
                     ),
-                    subtitle: Text(
-                      "Check-in: $formattedCheckIn\nCheck-out: $formattedCheckOut",
-                    ),
-                  ),
-                  const Divider(),
-                  ExpansionTile(
-                    title: Row(
+                    const Divider(),
+                    ExpansionTile(
+                      title: Row(
+                        children: [
+                          Image.asset('assets/icons/trx.png', width: 24),
+                          const SizedBox(width: 8),
+                          const Text('Transfer Bank'),
+                        ],
+                      ),
                       children: [
-                        Image.asset('assets/icons/trx.png', width: 24),
-                        const SizedBox(width: 8),
-                        const Text('Transfer Bank'),
+                        RadioListTile<PaymentMethod>(
+                          value: PaymentMethod.bankTransferBCA,
+                          groupValue: selectedMethod,
+                          onChanged: (value) {
+                            if (value != null) {
+                              setState(() => selectedMethod = value);
+                            }
+                          },
+                          title: Row(
+                            children: [
+                              Image.asset('assets/icons/BCA.png', width: 24),
+                              const SizedBox(width: 8),
+                              const Text('Bank BCA'),
+                            ],
+                          ),
+                        ),
                       ],
                     ),
-                    children: [
-                      RadioListTile<PaymentMethod>(
-                        value: PaymentMethod.bankTransferBCA,
-                        groupValue: selectedMethod,
-                        onChanged: (value) {
-                          if (value != null) {
-                            setState(() => selectedMethod = value);
-                          }
-                        },
-                        title: Row(
-                          children: [
-                            Image.asset('assets/icons/BCA.png', width: 24),
-                            const SizedBox(width: 8),
-                            const Text('Bank BCA'),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  PaymentOptionTile(
-                    label: 'QRIS Payment',
-                    iconPath: 'assets/icons/QRIS.png',
-                    selected: selectedMethod == PaymentMethod.qris,
-                    onTap: () {
-                      setState(() => selectedMethod = PaymentMethod.qris);
-                    },
-                  ),
-                ],
-              ),
-            ),
-          ),
-          const Spacer(),
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: SizedBox(
-              width: double.infinity,
-              height: 48,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF819766),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
-                onPressed: _navigateToPaymentPage,
-                child: const Text(
-                  'CONFIRM',
-                  style: TextStyle(color: Colors.white),
+                    PaymentOptionTile(
+                      label: 'QRIS Payment',
+                      iconPath: 'assets/icons/QRIS.png',
+                      selected: selectedMethod == PaymentMethod.qris,
+                      onTap: () {
+                        setState(() => selectedMethod = PaymentMethod.qris);
+                      },
+                    ),
+                  ],
                 ),
               ),
             ),
-          ),
-        ],
+            const Spacer(),
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: SizedBox(
+                width: double.infinity,
+                height: 48,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF819766),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  onPressed: _navigateToPaymentPage,
+                  child: const Text(
+                    'CONFIRM',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

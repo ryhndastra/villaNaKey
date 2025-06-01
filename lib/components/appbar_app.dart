@@ -11,6 +11,7 @@ class AppBarApp extends StatelessWidget implements PreferredSizeWidget {
     final user = userProvider.user;
 
     return AppBar(
+      automaticallyImplyLeading: false,
       title: Row(
         children: [
           Image.asset('assets/images/logoya.png', width: 55, height: 55),

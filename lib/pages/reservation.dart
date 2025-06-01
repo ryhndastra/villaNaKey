@@ -1,12 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:provider/provider.dart';
+import 'package:villanakey/auth/login_page.dart';
 import 'package:villanakey/pages/payment_page.dart';
 import 'package:villanakey/providers/user_provider.dart';
 
 class Reservation extends StatefulWidget {
-  Reservation({super.key});
+  const Reservation({super.key});
 
   @override
   State<Reservation> createState() => _ReservationState();
@@ -21,6 +23,8 @@ class _ReservationState extends State<Reservation> {
   DateTime? selectedDate;
   DateTime? selectedRangeStart;
   DateTime? selectedRangeEnd;
+  List<DateTime> selectedDates = [];
+  List<DateTime> bookedDates = [];
 
   int totalPrice = 0;
   final int pricePerDay = 1500000;
@@ -30,9 +34,71 @@ class _ReservationState extends State<Reservation> {
     super.initState();
     _selectedDay = null;
     _focusedDay = DateTime.now();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final userProvider = Provider.of<UserProvider>(context, listen: false);
+      if (userProvider.user == null) {
+        Navigator.of(
+          context,
+        ).pushReplacement(MaterialPageRoute(builder: (_) => LoginPage()));
+      } else {
+        fetchBookedDates();
+      }
+    });
+  }
+
+  Future<void> fetchBookedDates() async {
+    final snapshot =
+        await FirebaseFirestore.instance.collection('reservations').get();
+
+    List<DateTime> dates = [];
+    for (var doc in snapshot.docs) {
+      final data = doc.data();
+      final status = data['status'];
+
+      final checkInRaw = data['checkIn'];
+      final checkOutRaw = data['checkOut'];
+
+      if (checkInRaw != null &&
+          checkOutRaw != null &&
+          status == 'Pembayaran berhasil') {
+        DateTime start;
+        DateTime end;
+
+        if (checkInRaw is Timestamp) {
+          start = checkInRaw.toDate();
+        } else if (checkInRaw is String) {
+          start = DateTime.tryParse(checkInRaw) ?? DateTime.now();
+        } else {
+          continue;
+        }
+
+        if (checkOutRaw is Timestamp) {
+          end = checkOutRaw.toDate();
+        } else if (checkOutRaw is String) {
+          end = DateTime.tryParse(checkOutRaw) ?? DateTime.now();
+        } else {
+          continue;
+        }
+
+        for (int i = 0; i <= end.difference(start).inDays; i++) {
+          dates.add(start.add(Duration(days: i)));
+        }
+      }
+    }
+
+    setState(() {
+      bookedDates = dates;
+    });
   }
 
   void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
+    if (bookedDates.any((d) => isSameDay(d, selectedDay))) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("Tanggal tidak tersedia")));
+      return;
+    }
+
     setState(() {
       if (_rangeStart != null && _rangeEnd != null) {
         if ((isSameDay(selectedDay, _rangeStart) ||
@@ -59,6 +125,23 @@ class _ReservationState extends State<Reservation> {
   }
 
   void _onRangeSelected(DateTime? start, DateTime? end, DateTime focusedDay) {
+    if (start != null && end != null) {
+      for (
+        DateTime d = start;
+        d.isBefore(end.add(Duration(days: 1)));
+        d = d.add(Duration(days: 1))
+      ) {
+        if (bookedDates.any((bd) => isSameDay(bd, d))) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text("Beberapa tanggal dalam rentang sudah dibooking"),
+            ),
+          );
+          return;
+        }
+      }
+    }
+
     setState(() {
       _focusedDay = focusedDay;
       _rangeStart = start;
@@ -181,7 +264,7 @@ class _ReservationState extends State<Reservation> {
         ),
       );
 
-      Navigator.push(
+      final result = await Navigator.push(
         context,
         MaterialPageRoute(
           builder:
@@ -192,6 +275,10 @@ class _ReservationState extends State<Reservation> {
               ),
         ),
       );
+
+      if (result == true) {
+        fetchBookedDates();
+      }
     }
   }
 
@@ -211,10 +298,6 @@ class _ReservationState extends State<Reservation> {
 
     final userProvider = Provider.of<UserProvider>(context);
     final user = userProvider.user;
-
-    if (user == null) {
-      return const Scaffold(body: Center(child: CircularProgressIndicator()));
-    }
 
     return SingleChildScrollView(
       child: Container(
@@ -399,6 +482,27 @@ class _ReservationState extends State<Reservation> {
                       }
                       return true;
                     },
+                    calendarBuilders: CalendarBuilders(
+                      defaultBuilder: (context, day, focusedDay) {
+                        final isBooked = bookedDates.any(
+                          (d) => isSameDay(d, day),
+                        );
+                        return Container(
+                          margin: const EdgeInsets.all(6.0),
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            color: isBooked ? Colors.red[300] : null,
+                            shape: BoxShape.circle,
+                          ),
+                          child: Text(
+                            '${day.day}',
+                            style: TextStyle(
+                              color: isBooked ? Colors.white : null,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
                   ),
                 ],
               ),
@@ -440,7 +544,7 @@ class _ReservationState extends State<Reservation> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "${user.name}",
+                            "${user?.name}",
                             style: TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: 16,
@@ -448,7 +552,7 @@ class _ReservationState extends State<Reservation> {
                           ),
                           SizedBox(height: 2),
                           Text(
-                            "${user.email}",
+                            "${user?.email}",
                             style: TextStyle(
                               fontWeight: FontWeight.w400,
                               fontSize: 12,
@@ -457,7 +561,7 @@ class _ReservationState extends State<Reservation> {
                           ),
                           SizedBox(height: 2),
                           Text(
-                            "${user.phone}",
+                            "${user?.phone}",
                             style: TextStyle(
                               fontWeight: FontWeight.w400,
                               fontSize: 12,

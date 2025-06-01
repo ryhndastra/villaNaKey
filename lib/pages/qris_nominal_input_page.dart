@@ -64,7 +64,9 @@ class _QrisNominalInputPageState extends State<QrisNominalInputPage> {
           ).showSnackBar(const SnackBar(content: Text('Pembayaran berhasil!')));
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (_) => CustomBottomBar(initialIndex: 0)),
+            MaterialPageRoute(
+              builder: (_) => const CustomBottomBar(initialIndex: 0),
+            ),
           );
         }
       } catch (e) {
@@ -99,6 +101,7 @@ class _QrisNominalInputPageState extends State<QrisNominalInputPage> {
         foregroundColor: Colors.black,
         centerTitle: true,
         elevation: 1,
+        automaticallyImplyLeading: true,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(24),

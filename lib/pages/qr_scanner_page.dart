@@ -25,40 +25,67 @@ class _QrisScannerPageState extends State<QrisScannerPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Scan QR'), centerTitle: true),
-      body: MobileScanner(
-        controller: MobileScannerController(
-          detectionSpeed: DetectionSpeed.normal,
-        ),
-        onDetect: (capture) {
-          if (_isScanned) return;
-
-          final barcode = capture.barcodes.first;
-          final code = barcode.rawValue;
-
-          if (code == null) return;
-
-          if (code.startsWith('https://example.com/payment')) {
-            _isScanned = true;
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder:
-                    (_) => QrisNominalInputPage(
-                      expectedAmount: widget.expectedAmount,
-                      checkIn: widget.checkIn,
-                      checkOut: widget.checkOut,
-                      harga: widget.harga,
-                    ),
+    return WillPopScope(
+      onWillPop: () async {
+        bool canLeave = await showDialog(
+          context: context,
+          builder:
+              (context) => AlertDialog(
+                title: const Text('Keluar Scan?'),
+                content: const Text('Apakah kamu yakin ingin kembali?'),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop(false),
+                    child: const Text('Tidak'),
+                  ),
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop(true),
+                    child: const Text('Ya'),
+                  ),
+                ],
               ),
-            );
-          } else {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(const SnackBar(content: Text('QR tidak valid.')));
-          }
-        },
+        );
+        return canLeave;
+      },
+      child: Scaffold(
+        appBar: AppBar(title: const Text('Scan QR'), centerTitle: true),
+        body: MobileScanner(
+          controller: MobileScannerController(
+            detectionSpeed: DetectionSpeed.normal,
+          ),
+          onDetect: (capture) {
+            if (_isScanned) return;
+
+            final barcode = capture.barcodes.first;
+            final code = barcode.rawValue;
+
+            if (code == null) return;
+
+            if (code.startsWith('https://example.com/payment')) {
+              _isScanned = true;
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder:
+                      (_) => QrisNominalInputPage(
+                        expectedAmount: widget.expectedAmount,
+                        checkIn: widget.checkIn,
+                        checkOut: widget.checkOut,
+                        harga: widget.harga,
+                      ),
+                ),
+              ).then((value) {
+                setState(() {
+                  _isScanned = false;
+                });
+              });
+            } else {
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(const SnackBar(content: Text('QR tidak valid.')));
+            }
+          },
+        ),
       ),
     );
   }
