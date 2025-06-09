@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:villanakey/auth/login_page.dart';
 import 'package:villanakey/pages/payment_page.dart';
 import 'package:villanakey/providers/user_provider.dart';
+import 'package:villanakey/components/decorated_box_container.dart';
 
 class Reservation extends StatefulWidget {
   const Reservation({super.key});
@@ -305,19 +306,7 @@ class _ReservationState extends State<Reservation> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              padding: EdgeInsets.all(16.0),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(12.0),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.2),
-                    blurRadius: 5.0,
-                    offset: Offset(0, 3),
-                  ),
-                ],
-              ),
+            DecoratedBoxContainer(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -407,22 +396,10 @@ class _ReservationState extends State<Reservation> {
                 ],
               ),
             ),
-            SizedBox(height: 30),
+            SizedBox(height: 25),
 
             // Calendar
-            Container(
-              padding: EdgeInsets.only(bottom: 20, left: 40, right: 40),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(12.0),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.2),
-                    blurRadius: 5.0,
-                    offset: Offset(0, 3),
-                  ),
-                ],
-              ),
+            DecoratedBoxContainer(
               child: Column(
                 children: [
                   TableCalendar(
@@ -431,6 +408,13 @@ class _ReservationState extends State<Reservation> {
                     headerStyle: HeaderStyle(
                       formatButtonVisible: false,
                       titleCentered: true,
+                      titleTextStyle: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black87,
+                      ),
+                      headerPadding: EdgeInsets.zero,
+                      headerMargin: EdgeInsets.only(bottom: 4),
                     ),
                     availableGestures: AvailableGestures.all,
                     selectedDayPredicate: (day) {
@@ -509,19 +493,7 @@ class _ReservationState extends State<Reservation> {
             ),
 
             SizedBox(height: 16),
-            Container(
-              padding: EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(12.0),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.2),
-                    blurRadius: 5.0,
-                    offset: Offset(0, 3),
-                  ),
-                ],
-              ),
+            DecoratedBoxContainer(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -540,64 +512,63 @@ class _ReservationState extends State<Reservation> {
                         height: 40,
                       ),
                       SizedBox(width: 10),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "${user?.name}",
-                            style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 16,
-                            ),
-                          ),
-                          SizedBox(height: 2),
-                          Text(
-                            "${user?.email}",
-                            style: TextStyle(
-                              fontWeight: FontWeight.w400,
-                              fontSize: 12,
-                              color: Colors.black54,
-                            ),
-                          ),
-                          SizedBox(height: 2),
-                          Text(
-                            "${user?.phone}",
-                            style: TextStyle(
-                              fontWeight: FontWeight.w400,
-                              fontSize: 12,
-                              color: Colors.black54,
-                            ),
-                          ),
-                          SizedBox(height: 2),
-                          Text(
-                            "Price: Rp. ${NumberFormat('#,###', 'id_ID').format(totalPrice)}",
-                            style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 14,
-                              color: Colors.black87,
-                            ),
-                          ),
-                          SizedBox(height: 5),
-
-                          // Tanggal Yang dipilih
-                          if (_selectedDay != null &&
-                              _rangeStart == null &&
-                              _rangeEnd == null)
-                            Padding(
-                              padding: const EdgeInsets.only(top: 10),
-                              child: Text(
-                                'Booking Date: ${DateFormat('d MMMM yyyy').format(_selectedDay!)}',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500,
-                                  color: Color(0xFF42754C),
-                                ),
+                      Flexible(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "${user?.name}",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 16,
                               ),
-                            )
-                          else if (_rangeStart != null && _rangeEnd != null)
-                            Padding(
-                              padding: const EdgeInsets.only(top: 10),
-                              child: Text(
+                            ),
+                            SizedBox(height: 2),
+                            Text(
+                              "${user?.email}",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w400,
+                                fontSize: 12,
+                                color: Colors.black54,
+                              ),
+                            ),
+                            SizedBox(height: 2),
+                            Text(
+                              "${user?.phone}",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w400,
+                                fontSize: 12,
+                                color: Colors.black54,
+                              ),
+                            ),
+                            SizedBox(height: 2),
+                            Text(
+                              "Price: Rp. ${NumberFormat('#,###', 'id_ID').format(totalPrice)}",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14,
+                                color: Colors.black87,
+                              ),
+                            ),
+                            SizedBox(height: 5),
+
+                            // Tanggal Yang dipilih
+                            if (_selectedDay != null &&
+                                _rangeStart == null &&
+                                _rangeEnd == null)
+                              Padding(
+                                padding: const EdgeInsets.only(top: 10),
+                                child: Text(
+                                  'Booking Date: ${DateFormat('d MMMM yyyy').format(_selectedDay!)}',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                    color: Color(0xFF42754C),
+                                  ),
+                                ),
+                              )
+                            else if (_rangeStart != null && _rangeEnd != null)
+                              Text(
                                 'Stay Duration: ${DateFormat('d MMMM yyyy').format(_rangeStart!)}'
                                 ' - ${DateFormat('d MMMM yyyy').format(_rangeEnd!)}',
                                 style: TextStyle(
@@ -605,9 +576,11 @@ class _ReservationState extends State<Reservation> {
                                   fontWeight: FontWeight.w500,
                                   color: Color(0xFF42754C),
                                 ),
+                                softWrap: true,
+                                overflow: TextOverflow.visible,
                               ),
-                            ),
-                        ],
+                          ],
+                        ),
                       ),
                     ],
                   ),

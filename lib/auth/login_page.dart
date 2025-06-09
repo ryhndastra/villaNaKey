@@ -207,13 +207,12 @@ Future<void> loginWithEmail(
     if (userCredential.user!.emailVerified) {
       await Provider.of<UserProvider>(context, listen: false).fetchUser();
 
-      Navigator.pushReplacementNamed(
+      Navigator.pushReplacement(
         context,
         MaterialPageRoute(
           builder:
               (_) => const CustomBottomBar(initialIndex: 0, showWelcome: true),
         ),
-        (route) => false,
       );
     } else {
       await FirebaseAuth.instance.signOut();

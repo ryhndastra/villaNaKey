@@ -113,107 +113,125 @@ class _UserSettingsState extends State<UserSettings> {
                   Divider(thickness: 1, height: 1, color: Colors.grey.shade500),
                   const SizedBox(height: 24),
 
-                  Padding(
-                    padding: const EdgeInsets.only(left: 15),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Bagian Change Information
+                      Padding(
+                        padding: const EdgeInsets.only(left: 15),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Image.asset(
-                              'assets/icons/information_circle.png',
-                              width: 25,
-                              height: 25,
-                              color: const Color.fromARGB(255, 122, 122, 122),
-                            ),
-                            const SizedBox(width: 12),
-                            Text(
-                              "Change Information Account",
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w300,
-                                color: Colors.grey.shade900,
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 16),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 50),
-                          child: InkWell(
-                            onTap: () async {
-                              await Navigator.pushNamed(context, '/changeinfo');
-                              await Provider.of<UserProvider>(
-                                context,
-                                listen: false,
-                              ).fetchUser();
-                            },
-                            child: const Text(
-                              "Change Information",
-                              style: TextStyle(
-                                fontWeight: FontWeight.w300,
-                                fontSize: 16,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 24),
-                        Divider(
-                          thickness: 1,
-                          height: 1,
-                          color: Colors.grey.shade500,
-                        ),
-                        const SizedBox(height: 24),
-
-                        Padding(
-                          padding: const EdgeInsets.only(left: 15),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                children: [
-                                  Icon(
-                                    Icons.list_alt,
-                                    color: Color.fromARGB(255, 122, 122, 122),
+                            Row(
+                              children: [
+                                Image.asset(
+                                  'assets/icons/information_circle.png',
+                                  width: 25,
+                                  height: 25,
+                                  color: const Color.fromARGB(
+                                    255,
+                                    122,
+                                    122,
+                                    122,
                                   ),
-                                  const SizedBox(width: 12),
-                                  Text(
-                                    "Reservation History",
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w300,
-                                      color: Colors.grey.shade900,
-                                    ),
+                                ),
+                                const SizedBox(width: 12),
+                                Text(
+                                  "Change Information Account",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w300,
+                                    color: Colors.grey.shade900,
                                   ),
-                                ],
-                              ),
-                              const SizedBox(height: 16),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 50),
-                                child: InkWell(
-                                  onTap: () {
-                                    Navigator.pushNamed(context, '/orderlist');
-                                  },
-                                  child: const Text(
-                                    "Lihat Semua Reservasi",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w300,
-                                      fontSize: 16,
-                                      color: Colors.black,
-                                    ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 16),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 50),
+                              child: InkWell(
+                                onTap: () async {
+                                  await Navigator.pushNamed(
+                                    context,
+                                    '/changeinfo',
+                                  );
+                                  await Provider.of<UserProvider>(
+                                    context,
+                                    listen: false,
+                                  ).fetchUser();
+                                },
+                                child: const Text(
+                                  "Change Information",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w300,
+                                    fontSize: 16,
+                                    color: Colors.black,
                                   ),
                                 ),
                               ),
-                              const SizedBox(height: 24),
-                            ],
-                          ),
+                            ),
+                            const SizedBox(height: 24),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+
+                      // Divider dipindahkan keluar padding agar full kiri
+                      Divider(
+                        thickness: 1,
+                        height: 1,
+                        color: Colors.grey.shade500,
+                      ),
+                      const SizedBox(height: 24),
+
+                      // Bagian Reservation History
+                      Padding(
+                        padding: const EdgeInsets.only(left: 15),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Icon(
+                                  Icons.list_alt,
+                                  color: Color.fromARGB(255, 122, 122, 122),
+                                ),
+                                const SizedBox(width: 12),
+                                Text(
+                                  "Reservation History",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w300,
+                                    color: Colors.grey.shade900,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 16),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 50),
+                              child: InkWell(
+                                onTap: () {
+                                  Navigator.pushNamed(context, '/orderlist');
+                                },
+                                child: const Text(
+                                  "Lihat Semua Reservasi",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w300,
+                                    fontSize: 16,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 24),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
+
       bottomNavigationBar:
           user == null
               ? null
