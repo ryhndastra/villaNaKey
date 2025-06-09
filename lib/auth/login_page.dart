@@ -207,7 +207,7 @@ Future<void> loginWithEmail(
     if (userCredential.user!.emailVerified) {
       await Provider.of<UserProvider>(context, listen: false).fetchUser();
 
-      Navigator.pushAndRemoveUntil(
+      Navigator.pushReplacementNamed(
         context,
         MaterialPageRoute(
           builder:
