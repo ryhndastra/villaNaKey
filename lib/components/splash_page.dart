@@ -13,13 +13,13 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
   late AnimationController _rollSlideController;
   late AnimationController _popController;
 
-  late Animation<double> _rollAnimation; // rotasi searah jarum jam
-  late Animation<Offset> _slideAnimation; // geser dari kiri ke tengah
+  late Animation<double> _rollAnimation;
+  late Animation<Offset> _slideAnimation;
 
-  late Animation<double> _popScaleAnimation; // pop scale besar kecil
-  late Animation<double> _popOpacityAnimation; // opacity turun saat pop
+  late Animation<double> _popScaleAnimation;
+  late Animation<double> _popOpacityAnimation;
 
-  bool _showLogo = true; // untuk sembunyikan logo saat pop selesai
+  bool _showLogo = true;
 
   @override
   void initState() {
@@ -30,10 +30,7 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
       vsync: this,
     );
 
-    _rollAnimation = Tween<double>(
-      begin: 0,
-      end: 4 * pi, // 2 putaran searah jarum jam
-    ).animate(
+    _rollAnimation = Tween<double>(begin: 0, end: 4 * pi).animate(
       CurvedAnimation(parent: _rollSlideController, curve: Curves.easeOut),
     );
 
@@ -87,7 +84,6 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
           _showLogo = false;
         });
 
-        // Pindah halaman setelah rebuild splashscreen tanpa logo
         WidgetsBinding.instance.addPostFrameCallback((_) {
           Navigator.pushReplacementNamed(context, '/home');
         });
@@ -150,7 +146,7 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
                       fit: BoxFit.contain,
                     ),
                   )
-                  : const SizedBox.shrink(), // kosong saat logo disembunyikan
+                  : const SizedBox.shrink(),
         ),
       ),
     );
