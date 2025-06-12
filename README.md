@@ -30,6 +30,24 @@
 
 ---
 
+## 📂 Struktur Proyek
+
+lib/
+├── pages/             # Tampilan halaman utama
+├── models/            # Model data (User, Reservasi)
+├── services/          # Integrasi Firebase
+├── providers/         # State management (Provider)
+├── widgets/           # Komponen UI reusable
+└── main.dart          # Entry point aplikasi
+
+---
+
+## 📄 Lisensi
+MIT License © 2025 [Reyhand,Naufal]
+Dibuat dengan ❤️ oleh developer Flutter, untuk menghadirkan pengalaman reservasi villa yang eksklusif dan seamless.
+
+---
+
 ## 🚀 Cara Menjalankan Aplikasi
 
 ```bash
