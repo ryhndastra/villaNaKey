@@ -34,12 +34,13 @@
 
 ```bash
 lib/
-├── pages/             # Tampilan halaman utama
-├── models/            # Model data (User, Reservasi)
-├── services/          # Integrasi Firebase
-├── providers/         # State management (Provider)
-├── widgets/           # Komponen UI reusable
-└── main.dart          # Entry point aplikasi
+├── auth/            # Autentkasi Firebase
+├── models/          # Model data (User, Reservasi)
+├── components/      # Komponen UI reusable
+├── pages/           # Tampilan halaman utama
+├── providers/       # State management (Provider)
+├── service/         # Connectivity service
+└── main.dart        # Entry point aplikasi
 ```
 
 ---
