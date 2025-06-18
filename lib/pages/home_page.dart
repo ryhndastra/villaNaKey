@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:villanakey/components/bottom_bar.dart';
 import 'package:villanakey/components/skeleton_loader.dart';
 import 'package:villanakey/components/decorated_box_container.dart';
+import 'package:villanakey/providers/user_provider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -154,11 +156,18 @@ class _HomePageState extends State<HomePage> {
                           SizedBox(height: 10),
                           Row(
                             children: [
-                              Icon(Icons.location_on, size: 20, color: Color(0xFF42754C),),
+                              Icon(
+                                Icons.location_on,
+                                size: 20,
+                                color: Color(0xFF42754C),
+                              ),
                               SizedBox(width: 8),
                               Text(
                                 'Cihanjawar Bojong, Purwakarta',
-                                style: TextStyle(fontWeight: FontWeight.w400, color: Colors.grey[600]), 
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  color: Colors.grey[600],
+                                ),
                               ),
                             ],
                           ),
@@ -172,7 +181,10 @@ class _HomePageState extends State<HomePage> {
                               SizedBox(width: 8),
                               Text(
                                 '081909333132',
-                                style: TextStyle(fontWeight: FontWeight.w400, color: Colors.grey[600]), 
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  color: Colors.grey[600],
+                                ),
                               ),
                             ],
                           ),
@@ -240,31 +252,113 @@ class _HomePageState extends State<HomePage> {
                           width: 200,
                           child: ElevatedButton(
                             onPressed: () {
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
+                              final isLoggedIn =
+                                  Provider.of<UserProvider>(
+                                    context,
+                                    listen: false,
+                                  ).isLoggedIn;
+
+                              if (!isLoggedIn) {
+                                showDialog(
+                                  context: context,
                                   builder:
-                                      (context) => const CustomBottomBar(
-                                        initialIndex: 1,
+                                      (context) => AlertDialog(
+                                        title: const Text(
+                                          'Harap Login Dahulu',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w600,
+                                            color: Color.fromARGB(
+                                              255,
+                                              43,
+                                              75,
+                                              49,
+                                            ),
+                                          ),
+                                        ),
+                                        content: const Text(
+                                          'Silakan login terlebih dahulu untuk melakukan Reservasi.',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w400,
+                                            color: Colors.black,
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                            child: const Text(
+                                              'Tutup',
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.w500,
+                                                color: Colors.black54,
+                                                fontSize: 16,
+                                              ),
+                                            ),
+                                          ),
+                                          ElevatedButton(
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                              Navigator.pushNamed(
+                                                context,
+                                                '/login',
+                                              );
+                                            },
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor: const Color(
+                                                0xFF819766,
+                                              ),
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                    horizontal: 20,
+                                                    vertical: 10,
+                                                  ),
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(8),
+                                              ),
+                                            ),
+                                            child: const Text(
+                                              'Login',
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.w500,
+                                                color: Colors.white,
+                                                fontSize: 16,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                ),
-                              );
+                                );
+                              } else {
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder:
+                                        (context) => const CustomBottomBar(
+                                          initialIndex: 1,
+                                        ),
+                                  ),
+                                );
+                              }
                             },
+
                             style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF42754C),
-                          foregroundColor: Colors.white,
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 14.0,
-                            horizontal: 20.0,
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          textStyle: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
+                              backgroundColor: const Color(0xFF42754C),
+                              foregroundColor: Colors.white,
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 14.0,
+                                horizontal: 20.0,
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              textStyle: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
                             child: const Text("Booking"),
                           ),
                         ),
