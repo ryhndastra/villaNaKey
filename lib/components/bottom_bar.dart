@@ -65,13 +65,79 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
           Icon(Icons.home, size: 30, color: Colors.white),
           Icon(Icons.bed, size: 30, color: Colors.white),
         ],
-        onTap: (index) {
+        onTap: (index) async {
+          final isLoggedIn =
+              Provider.of<UserProvider>(context, listen: false).isLoggedIn;
+
+          if (!isLoggedIn && index == 1) {
+            showDialog(
+              context: context,
+              builder:
+                  (context) => AlertDialog(
+                    backgroundColor: Color.fromARGB(255, 255, 255, 255),
+                    title: const Text(
+                      'Harap Login Dahulu',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        color: Color.fromARGB(255, 43, 75, 49),
+                      ),
+                    ),
+                    content: const Text(
+                      'Silakan login terlebih dahulu untuk melakukan Reservasi',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        color: Colors.black,
+                        fontSize: 16,
+                      ),
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: const Text(
+                          'Tutup',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black54,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                          Navigator.pushNamed(context, '/login');
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Color(0xFF42754C),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 20,
+                            vertical: 10,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                        child: const Text(
+                          'Login',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            color: Colors.white,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+            );
+            return;
+          }
+
           setState(() {
             _selectedIndex = index;
           });
         },
-        animationCurve: Curves.easeInOut,
-        animationDuration: const Duration(milliseconds: 250),
       ),
     );
   }
