@@ -54,7 +54,7 @@ Dibuat dengan ❤️ oleh developer Flutter, untuk menghadirkan pengalaman reser
 ## 🚀 Cara Menjalankan Aplikasi
 
 ```bash
-git clone https://github.com/username/villanakey.git
+git clone https://github.com/ryhndastra/villanakey.git
 cd villanakey
 flutter pub get
 flutter run
