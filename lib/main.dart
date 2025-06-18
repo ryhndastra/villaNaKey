@@ -53,6 +53,7 @@ class MainApp extends StatelessWidget {
       navigatorKey: navigatorKey,
       debugShowCheckedModeBanner: false,
       initialRoute: '/',
+      theme: ThemeData(fontFamily: 'Poppins'),
       routes: {
         '/': (context) => const SplashPage(),
         '/home': (context) => const CustomBottomBar(),

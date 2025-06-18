@@ -8,6 +8,8 @@ class UserProvider extends ChangeNotifier {
 
   UserModel? get user => _user;
 
+  bool get isLoggedIn => _user != null; 
+
   Future<void> fetchUser() async {
     _user = null;
     notifyListeners();
