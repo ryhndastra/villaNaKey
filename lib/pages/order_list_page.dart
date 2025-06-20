@@ -48,12 +48,20 @@ class OrderListPage extends StatelessWidget {
               final amount = data['amount'] ?? 0;
 
               final dateFormat = DateFormat('dd MMM yyyy', 'id_ID');
+              final checkInStr =
+                  checkIn != null
+                      ? dateFormat.format(checkIn)
+                      : 'Tanggal tidak valid';
+              final checkOutStr =
+                  checkOut != null
+                      ? dateFormat.format(checkOut)
+                      : 'Tanggal tidak valid';
 
               return Card(
                 margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 child: ListTile(
                   title: Text(
-                    '${dateFormat.format(checkIn!)} - ${dateFormat.format(checkOut!)}',
+                    '$checkInStr - $checkOutStr',
                     style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                   subtitle: Text(
