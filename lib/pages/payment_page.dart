@@ -31,6 +31,15 @@ class _PaymentPageState extends State<PaymentPage> {
   }
 
   void _navigateToPaymentPage() async {
+    if (widget.checkIn == null || widget.checkOut == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Silakan pilih tanggal check-in dan check-out.'),
+        ),
+      );
+      return;
+    }
+
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -112,33 +121,41 @@ class _PaymentPageState extends State<PaymentPage> {
                       ),
                     ),
                     const Divider(),
-                    ExpansionTile(
-                      title: Row(
+                    Theme(
+                      data: Theme.of(
+                        context,
+                      ).copyWith(dividerColor: Colors.transparent),
+                      child: ExpansionTile(
+                        tilePadding: const EdgeInsets.symmetric(horizontal: 16),
+                        childrenPadding: EdgeInsets.zero,
+                        title: Row(
+                          children: [
+                            Image.asset('assets/icons/trx.png', width: 24),
+                            const SizedBox(width: 8),
+                            const Text('Transfer Bank'),
+                          ],
+                        ),
                         children: [
-                          Image.asset('assets/icons/trx.png', width: 24),
-                          const SizedBox(width: 8),
-                          const Text('Transfer Bank'),
+                          RadioListTile<PaymentMethod>(
+                            value: PaymentMethod.bankTransferBCA,
+                            groupValue: selectedMethod,
+                            onChanged: (value) {
+                              if (value != null) {
+                                setState(() => selectedMethod = value);
+                              }
+                            },
+                            title: Row(
+                              children: [
+                                Image.asset('assets/icons/BCA.png', width: 24),
+                                const SizedBox(width: 8),
+                                const Text('Bank BCA'),
+                              ],
+                            ),
+                          ),
                         ],
                       ),
-                      children: [
-                        RadioListTile<PaymentMethod>(
-                          value: PaymentMethod.bankTransferBCA,
-                          groupValue: selectedMethod,
-                          onChanged: (value) {
-                            if (value != null) {
-                              setState(() => selectedMethod = value);
-                            }
-                          },
-                          title: Row(
-                            children: [
-                              Image.asset('assets/icons/BCA.png', width: 24),
-                              const SizedBox(width: 8),
-                              const Text('Bank BCA'),
-                            ],
-                          ),
-                        ),
-                      ],
                     ),
+
                     PaymentOptionTile(
                       label: 'QRIS Payment',
                       iconPath: 'assets/icons/QRIS.png',
