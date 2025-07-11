@@ -264,7 +264,7 @@ class _SignUpState extends State<SignUp> {
                     onTap: () => Navigator.pushNamed(context, '/login'),
                     child: const Text(
                       "Sign In",
-                      style: TextStyle(color: Color(0xFF819766)),
+                      style: TextStyle(color: Color(0xFF42754C)),
                     ),
                   ),
                 ],
@@ -283,7 +283,7 @@ class _SignUpState extends State<SignUp> {
                 ),
                 const Center(
                   child: CircularProgressIndicator(
-                    color: Color(0xff819766),
+                    color: Color(0xFF42754C),
                     strokeWidth: 4,
                   ),
                 ),

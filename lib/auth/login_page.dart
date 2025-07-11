@@ -163,7 +163,7 @@ class _LoginPageState extends State<LoginPage> {
                     },
                     child: const Text(
                       "Sign Up",
-                      style: TextStyle(color: Color(0xFF819766)),
+                      style: TextStyle(color: Color(0xFF42754C)),
                     ),
                   ),
                 ],
@@ -183,7 +183,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 const Center(
                   child: CircularProgressIndicator(
-                    color: Color(0xff819766),
+                    color: Color(0xFF42754C),
                     strokeWidth: 4,
                   ),
                 ),

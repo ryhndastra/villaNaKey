@@ -118,7 +118,7 @@ class _QrisNominalInputPageState extends State<QrisNominalInputPage> {
               style: const TextStyle(
                 fontSize: 30,
                 fontWeight: FontWeight.bold,
-                color: Color(0xFF819766),
+                color: Color(0xFF42754C),
               ),
             ),
             const SizedBox(height: 32),
@@ -157,7 +157,7 @@ class _QrisNominalInputPageState extends State<QrisNominalInputPage> {
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
                         borderSide: const BorderSide(
-                          color: Color(0xFF819766),
+                          color: Color(0xFF42754C),
                           width: 2,
                         ),
                       ),
@@ -169,7 +169,7 @@ class _QrisNominalInputPageState extends State<QrisNominalInputPage> {
                     height: 48,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF819766),
+                        backgroundColor: const Color(0xFF42754C),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),

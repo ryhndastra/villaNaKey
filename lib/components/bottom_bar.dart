@@ -59,7 +59,7 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
       body: _pages[_selectedIndex],
       bottomNavigationBar: CurvedNavigationBar(
         index: _selectedIndex,
-        color: const Color(0xFF819766),
+        color: const Color(0xFF42754C),
         backgroundColor: Colors.white,
         items: const [
           Icon(Icons.home, size: 30, color: Colors.white),

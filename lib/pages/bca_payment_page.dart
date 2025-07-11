@@ -115,7 +115,7 @@ class _BcaPaymentPageState extends State<BcaPaymentPage> {
               style: const TextStyle(
                 fontSize: 28,
                 fontWeight: FontWeight.bold,
-                color: Color(0xFF819766),
+                color: Color(0xFF42754C),
               ),
             ),
             const SizedBox(height: 32),
@@ -142,7 +142,7 @@ class _BcaPaymentPageState extends State<BcaPaymentPage> {
                 style: const TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
-                  color: Color(0xFF819766),
+                  color: Color(0xFF42754C),
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -158,7 +158,7 @@ class _BcaPaymentPageState extends State<BcaPaymentPage> {
               height: 50,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF819766),
+                  backgroundColor: const Color(0xFF42754C),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),

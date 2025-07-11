@@ -26,7 +26,7 @@ class AppBarApp extends StatelessWidget implements PreferredSizeWidget {
           ),
         ],
       ),
-      flexibleSpace: Container(color: const Color(0xFF819766)),
+      flexibleSpace: Container(color: const Color(0xFF42754C)),
       actions: <Widget>[
         Padding(
           padding: const EdgeInsets.only(right: 16.0),

@@ -27,7 +27,7 @@ class Button extends StatelessWidget {
       child: ElevatedButton(
         onPressed: () => _navigate(context),
         style: ElevatedButton.styleFrom(
-          backgroundColor: const Color(0xFF819766),
+          backgroundColor: const Color(0xFF42754C),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
           elevation: 10,
           padding: const EdgeInsets.symmetric(vertical: 14),
